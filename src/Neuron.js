@@ -2,6 +2,7 @@ const a = 0.02;
 const b = 0.2;
 const c = -65;
 const d = 2;
+const maxWeight = 10; // maximal synaptic strength
 
 export default class Neuron {
   // default params of Excitatory neurons
@@ -10,6 +11,7 @@ export default class Neuron {
     this._v = v;
     this._u = u;
     this._isSpiking = false;
+    this._STDP = 0;
     this.isSensor = false;
     this._input = new Map(/*[neuron, weight]*/);
   }
@@ -20,14 +22,17 @@ export default class Neuron {
 
   // update 1 ms
   update() {
-    // calculate inI for neurons not sensor
+    // for neuron which is not sensor
     if (!this.isSensor) {
       this.inI = 0;
-      this._input.forEach((value, key, map) => {
-        if (key._isSpiking ) {
-          this.inI += value;
+      this._input.forEach((weight, neuron) => {
+        if (neuron._isSpiking ) {
+          // increase inI from spiking inputs
+          this.inI += weight;
+          // decrease weights using own STDP
+          weight = Math.max(0, weight - this._STDP);
         }
-      })
+      });
     }
 
     // based on Izhikevich's neuron model
@@ -42,8 +47,14 @@ export default class Neuron {
       this._v = c;
       this._u = this._u + d;
       this._isSpiking = true;
+      this._STDP = 0.1;
+      // increase weight according to input's STDP
+      this._input.forEach((weight, neuron) => {
+        weight = Math.min(weight + neuron._STDP, maxWeight);
+      });
     } else {
       this._isSpiking = false;
+      this._STDP *= 0.95;
     }
   }
 
