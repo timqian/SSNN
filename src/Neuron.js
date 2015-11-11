@@ -3,6 +3,8 @@ const b = 0.2;
 const c = -65;
 const d = 2;
 const maxWeight = 10; // maximal synaptic strength
+const initialSTDP = 0.1;
+const decayingRate = 0.95;
 
 export default class Neuron {
   // default params of Excitatory neurons
@@ -13,11 +15,11 @@ export default class Neuron {
     this._isSpiking = false;
     this._STDP = 0;
     this.isSensor = false;
-    this._input = new Map(/*[neuron, weight]*/);
+    this._inputs = new Map(/*[neuron, weight]*/);
   }
 
   project(neuron, weight = 1) {
-    neuron._input.set(this, weight);
+    neuron._inputs.set(this, weight);
   }
 
   // update 1 ms
@@ -25,12 +27,13 @@ export default class Neuron {
     // for neuron which is not sensor
     if (!this.isSensor) {
       this.inI = 0;
-      this._input.forEach((weight, neuron) => {
+      this._inputs.forEach((weight, neuron, inputs) => {
         if (neuron._isSpiking ) {
-          // increase inI from spiking inputs
+          // increase inI from spiking inputss
           this.inI += weight;
           // decrease weights using own STDP
           weight = Math.max(0, weight - this._STDP);
+          inputs.set(neuron, weight);
         }
       });
     }
@@ -47,14 +50,15 @@ export default class Neuron {
       this._v = c;
       this._u = this._u + d;
       this._isSpiking = true;
-      this._STDP = 0.1;
-      // increase weight according to input's STDP
-      this._input.forEach((weight, neuron) => {
+      this._STDP = initialSTDP;
+      // increase weight according to inputs's STDP
+      this._inputs.forEach((weight, neuron, inputs) => {
         weight = Math.min(weight + neuron._STDP, maxWeight);
+        inputs.set(neuron, weight);
       });
     } else {
       this._isSpiking = false;
-      this._STDP *= 0.95;
+      this._STDP *= decayingRate;
     }
   }
 
