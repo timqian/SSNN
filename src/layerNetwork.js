@@ -2,27 +2,35 @@ import Neuron from './Neuron';
 const maxWeight = 10; // maximal synaptic strength
 
 export default class layerNetwork {
-  constructor(structure = [1,1], type = 'allToAll') {
-    this.sensors = [];
-    for (let i = 0; i < structure[0]; i++) {
-      let neu = new Neuron();
-      neu.isSensor = true;
-      this.sensors.push(neu);
-    }
-    this.inners = [];
-    for (var i = 0; i < structure[1]; i++) {
-      let neu = new Neuron();
-      neu.isSensor = false;
-      this.inners.push(neu);
-    }
+  constructor(...layerNeuNums) {
+    // this.layers = [];
+    // for (let i = 0; i < layerNeus.length; i++) {
+    //   this.layers.push([]);
+    //   for (let j = 0; j < layerNeus[i]; j++) {
+    //     let neu = new Neuron();
+    //     i == 0 ? neu.isSensor = true : neu.isSensor = false;
+    //     this.layers[i].push(neu);
+    //   }
+    // }
+
+    this.layers = layerNeuNums.map((neuNum) => {
+      let layer = [];
+      for (var i = 0; i < neuNum; i++) {
+        let neu = new Neuron();
+        neu.isSensor = i ? false : true; // i == 0 时 neu 为 sensor
+        layer.push(neu);
+      }
+      return layer;
+    });
+    console.log(this.layers);
+
     switch (type) {
       case 'allToAll':
         this.projectAll();
       default:
         this.projectAll();
     }
-    console.log(this.sensors);
-    console.log(this.inners);
+
   }
 
   update() {

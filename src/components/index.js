@@ -70,10 +70,11 @@
 //   // console.log(n1);
 // }
 
+import layerNetwork from '../layerNetwork';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import SpikeLine from './components/SpikeLine';
-import layerNetwork from './layerNetwork';
+import SpikeLine from './SpikeCanvas';
+import Settings from './NetworkSettings';
 
 const structure = [20, 5];
 const type = 'allToAll';
@@ -106,6 +107,7 @@ class SpikingHistory extends Component {
     }
     return(
       <div>
+        <Settings/>
         {sensorsCanvas}
         {innersCanvas}
       </div>

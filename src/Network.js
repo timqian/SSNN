@@ -12,5 +12,4 @@ export default class Network {
       neu.inI = inIs[i];
     });
   }
-
 }

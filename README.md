@@ -30,3 +30,5 @@ Difference is that update weight directory insted of through dirivetive.
 ## 如何使用网络
 
 learning rate 设为0
+
+## 先算出神经的反应, 再画出来
