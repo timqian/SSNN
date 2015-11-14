@@ -1,3 +1,5 @@
+// import fs from 'fs';
+
 function f(...a) {
   console.log(a);
 }
