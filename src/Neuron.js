@@ -1,3 +1,11 @@
+// TODO: 机会: 在这里作为 Sensor 的 neuron 和普通 neuron 用 neuron 的 isSensor 属性来区分,
+// 其实更好的办法是将它们分为两种不同的 neuron, 但它们的区别又不大, 这就是继承和多态的用物质的吧!!!
+// more thinks needed
+
+/**
+ * Neuron
+ */
+
 const a = 0.02;
 const b = 0.2;
 const c = -65;
@@ -16,6 +24,10 @@ export default class Neuron {
     this._STDP = 0;
     this.isSensor = false;
     this._inputs = new Map(/*[neuron, weight]*/);
+  }
+
+  clearSpikeTrain() {
+    this._spikeTrain = [];
   }
 
   project(neuron, weight = 1) {

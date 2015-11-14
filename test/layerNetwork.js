@@ -1,5 +1,8 @@
+// TODO: 我需要获得 network 其他信息, 从这个 network 得到 weights 等信息
+
 import layerNetwork from '../src/layerNetwork';
 
-let network = new layerNetwork(4, 3, 8, 10);
-
-// network.state();
+let network = new layerNetwork(5, 4, 3);
+network.setInIs([10, 10, 10, 10, 10]);
+let {spikeTrains} = network.think(400);
+console.log( spikeTrains );

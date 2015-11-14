@@ -1,15 +1,22 @@
-import Neuron from './Neuron';
-const maxWeight = 10; // maximal synaptic strength
 
+// TODO: 问题: 多重数组的的转化是否有更好的办法(相比这种方式: 在 map 的 callback 函数中使用 for)
+// [ [ [ 1, 2, ... ], [ 4, 19, ... ] ], [ [ 2, 3, ...], [1, 14, ... ] ] ] 用来记录 spike train,
+// 这种数据结构是否有更好的替代, 为了代码可读性, 候选人 可以是 obj
 
 /**
  * random weight, all to all connection network
  */
+
+import Neuron from './Neuron';
+import assert from 'assert';
+const maxWeight = 10; // maximal synaptic strength
+
 export default class layerNetwork {
   constructor(...layerNeuNums) {
+
     // init layers of network according to layerNeuNums
     // [3, 3, 3] => [[neu, neu, neu],[neu, neu, neu],[neu, neu, neu]]
-    let layers = layerNeuNums.map((neuNum, index) => {
+    this._layers = layerNeuNums.map((neuNum, index) => {
       let layer = [];
       for (let i = 0; i < neuNum; i++) {
         let neu = new Neuron();
@@ -20,7 +27,7 @@ export default class layerNetwork {
     });
 
     // projecting neurons
-    layers.reduce((preLayer, curLayer) => {
+    this._layers.reduce((preLayer, curLayer) => {
       preLayer.forEach((preNeu) => {
         curLayer.forEach((curNeu) => {
           preNeu.project(curNeu, Math.random() * maxWeight);
@@ -29,10 +36,21 @@ export default class layerNetwork {
       return curLayer;
     });
 
-    // console.log(layers[3]);
+    // console.log(this._layers[3]);
 
-    this._layers = layers;
-    this._spikeTrain = []; // [1, 3, 10, ...] recode spiking times
+    // layerNeuNums   =>   layers                    =>   _spikeTrains
+    // [2, 2]         =>   [[neu, neu],[neu, neu]]   =>   [ [ [ 1, 2, ... ], [ 4, 19, ... ] ], [ [ 2, 3, ...], [1, 14, ... ] ] ]
+    // `[1, 2, 6, ...]`: recode spiking times of one neuron
+    this._spikeTrains = layerNeuNums.map((neuNum) => {
+      let layerSpikeTrain = [];
+      for (let i = 0; i < neuNum; i++) {
+        let neuSpikeTrain = [];
+        layerSpikeTrain.push(neuSpikeTrain);
+      }
+      return layerSpikeTrain;
+    });
+
+    // console.log(this._spikeTrains);
   }
 
   // set input currents for input neurons
@@ -43,20 +61,25 @@ export default class layerNetwork {
     });
   }
 
-  // TODO: deside spikeTrain data structure and decide whether return it or other ways
-  // update network for `time` ms, then return the spikeTrain
+  // TODO: decide whether return it or other ways
+  // update network for `time` ms, then return the spikeTrains
   think(time) {
-
-    for (let i = 0; i < time; i++) {
+    for (let t = 0; t < time; t++) {
 
       // 从后层开始更新 network, 防止前面更新的影响后面的
       for (let i = this._layers.length - 1; i >= 0; i--) {
-        this._layers[i].forEach((neu) => {
+        this._layers[i].forEach((neu, neuIndex) => {
           neu.update();
+          if (neu._isSpiking) {
+            this._spikeTrains[i][neuIndex].push(t);
+          }
         });
       }
     }
 
-    return
+    return {
+      spikeTrains: this._spikeTrains,
+      
+    };
   }
 }
