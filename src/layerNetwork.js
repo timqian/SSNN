@@ -12,7 +12,7 @@ import assert from 'assert';
 const maxWeight = 10; // maximal synaptic strength
 
 export default class layerNetwork {
-  constructor(...layerNeuNums) {
+  constructor(layerNeuNums = []) {
 
     // init layers of network according to layerNeuNums
     // [3, 3, 3] => [[neu, neu, neu],[neu, neu, neu],[neu, neu, neu]]
@@ -79,7 +79,7 @@ export default class layerNetwork {
 
     return {
       spikeTrains: this._spikeTrains,
-      
+
     };
   }
 }
