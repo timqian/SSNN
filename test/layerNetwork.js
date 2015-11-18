@@ -4,5 +4,5 @@ import layerNetwork from '../src/layerNetwork';
 
 let network = new layerNetwork([5, 4, 3]);
 network.setInIs([10, 10, 10, 10, 10]);
-let {spikeTrains} = network.think(400);
+let { spikeTrains } = network.think(400);
 console.log( spikeTrains );

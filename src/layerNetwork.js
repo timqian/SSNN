@@ -79,7 +79,6 @@ export default class layerNetwork {
 
     return {
       spikeTrains: this._spikeTrains,
-
     };
   }
 }
