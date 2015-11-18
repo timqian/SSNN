@@ -70,8 +70,14 @@ algo(基于这篇 paper: []()):
 
 4. 测试训练成果
   1. 把一张图片给 网络看
-  2. 记录标定神经们的反应, 然后呢???? TODO 
+  2. 记录标定神经们的反应, 然后呢???? TODO
 
 ## TODO:
 
 - [ ] test using [esdoc](https://github.com/esdoc/esdoc) to write comments, another  reference: http://jonathancreamer.com/document-es6-with-esdoc/
+
+## Thoughts
+
+- class 的实例(怎么称呼? Object?) 其实是一堆数据, 和一些对这些数据做操作的函数. Object 是带有函数的数据结构, 这种设计思想,
+把相关的数据, 操作集中在一个 object 中, 有利于 __(?)
+- class 的设计服务于算法!!!
