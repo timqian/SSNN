@@ -81,3 +81,11 @@ algo(基于这篇 paper: []()):
 - class 的实例(怎么称呼? Object?) 其实是一堆数据, 和一些对这些数据做操作的函数. Object 是带有函数的数据结构, 这种设计思想,
 把相关的数据, 操作集中在一个 object 中, 有利于 __(?)
 - class 的设计服务于算法!!!
+
+## Refs
+
+- [Simple Model of Spiking Neurons (by Izhikevich)](http://www.izhikevich.org/publications/spikes.pdf)
+- [Polychronization: Computation with Spikes (by Izhikevich)](http://izhikevich.org/publications/spnet.pdf)
+- [A Minimal Spiking Neural Network to Rapidly Train
+and Classify Handwritten Digits in Binary and 10-
+Digit Tasks](http://thesai.org/Downloads/IJARAI/Volume4No7/Paper_1-A_Minimal_Spiking_Neural_Network_to_Rapidly_Train.pdf)
